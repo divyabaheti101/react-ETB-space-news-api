@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function App() {
-  const [flights, setFlights] = useState([
-    {flight_number: 1,
-      mission_name: 'Mission 1'
-    }, 
-    {flight_number: 2,
-      mission_name: 'Mission 2`'
-    }
-  ])
+  const [flights, setFlights] = useState([])
+
+  useEffect(() => {
+    //get request to fetch data from api
+    axios.get('https://api.spacexdata.com/v2/launches')
+    .then((res) => {
+      setFlights(res.data)
+    })
+    .catch((err) => {
+      console.log('Error while fetching data from api: ', err)
+    })
+  }, [])
+
   return (
     <ul>
       {flights.map((flight) => (
